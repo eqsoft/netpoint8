@@ -1,0 +1,24 @@
+#!/bin/bash
+
+OPTS=""
+
+if [ ! -z "${xbrowseropts}" ]
+then
+	# replace options "," with " ". Don't delete trailing " " from OPTS=" $...."!
+	OPTS=" ${xbrowseropts//,/ }"
+fi
+
+if [ "${xbrowser}" == "firefox" ]
+then
+	while [ ! $(pidof firefox) ] ; do
+		`firefox${OPTS}`
+	done
+fi
+
+if [ "${xbrowser}" == "seb" ]
+then
+	echo "try starting seb..."
+	while [ ! $(pidof firefox) ] ; do
+		`firefox -app /opt/browser/app/seb.ini${OPTS}`
+	done
+fi

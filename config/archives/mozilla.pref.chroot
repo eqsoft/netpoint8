@@ -1,0 +1,3 @@
+Package: firefox
+Pin: release a=jessie-backports
+Pin-Priority: 700
