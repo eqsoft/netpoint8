@@ -1,1 +1,15 @@
-nodm sudo openssh-server xorg xscreensaver openbox tint2 feh locales iptables git subversion gstreamer1.0-libav
+live-boot
+live-config
+live-config-systemd
+nodm 
+sudo 
+user-setup 
+console-setup 
+openssh-server 
+xorg 
+xscreensaver 
+openbox 
+tint2 
+feh 
+locales 
+git
