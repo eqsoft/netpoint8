@@ -1,6 +1,15 @@
 #!/bin/bash
 
 OPTS=""
+PROFILE="/home/${username}/ffprofile"
+
+# populate firefox profile
+firefox -silent -profile ${PROFILE}
+
+sleep 2
+
+# copy custom profile files
+cp -a /etc/firefox/profile/* ${PROFILE}
 
 if [ ! -z "${xbrowseropts}" ]
 then
@@ -11,7 +20,7 @@ fi
 if [ "${xbrowser}" == "firefox" ]
 then
 	while [ ! $(pidof firefox) ] ; do
-		`firefox${OPTS}`
+		`firefox -profile ${PROFILE}${OPTS}`
 	done
 fi
 
@@ -19,6 +28,6 @@ if [ "${xbrowser}" == "seb" ]
 then
 	echo "try starting seb..."
 	while [ ! $(pidof firefox) ] ; do
-		`firefox -app /opt/browser/app/seb.ini${OPTS}`
+		`firefox -app /opt/browser/app/seb.ini -profile ${PROFILE}${OPTS}`
 	done
 fi

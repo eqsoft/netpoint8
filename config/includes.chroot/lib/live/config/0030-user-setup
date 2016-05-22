@@ -26,6 +26,7 @@ Cmdline ()
 
 			live-config.username=*|username=*)
 				LIVE_USERNAME="${_PARAMETER#*username=}"
+				echo "${_PARAMETER}" >> /etc/environment
 				;;
 
 			x*=*)

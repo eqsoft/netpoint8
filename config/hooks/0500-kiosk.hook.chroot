@@ -45,6 +45,11 @@ find /usr/share/locale -maxdepth 1 -mindepth 1 -type d ! -iname 'de' -exec rm -r
 
 #apt-get autoremove --yes || true
 
+apt-get purge $(aptitude search '~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant!busybox!grub!initramfs-tools' | awk '{print $2}')
+apt-get purge aptitude
+apt-get autoremove
+apt-get clean
+
 # Removing unused files
 # find . -name *~ -print0 | xargs -0 rm -f
 
