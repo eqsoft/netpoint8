@@ -62,7 +62,7 @@ agent_start () {
 }
 
 agent_add () { 
-	eval /usr/local/bin/add_ssh_pass "${privkey}" "${rtckey}" 
+	eval /usr/local/bin/add_ssh_pass "${privkey}" "${xrtckey}" 
 }
 
 SshAgentStart

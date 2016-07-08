@@ -3,30 +3,30 @@
 host=$HOSTNAME
 gitpath=""
 
-if [ -z "${giturl}" ] || [ -z "${gitreponame}" ] 
+if [ -z "${xgiturl}" ] || [ -z "${xgitreponame}" ] 
 then
 	echo "giturl or gitreponame needed, abort!"
 	return 0
 fi
 
-if [ ! -z "${gitbranch}" ] ; then
+if [ ! -z "${xgitbranch}" ] ; then
 	#repo=""
-	repo=$(/usr/bin/git ls-remote "${giturl}" "${gitbranch}")
+	repo=$(/usr/bin/git ls-remote "${xgiturl}" "${xgitbranch}")
 	if [ -z "${repo}" ]
 	then
-		echo "no git branch found: ${giturl} ${gitbranch}"
+		echo "no git branch found: ${xgiturl} ${xgitbranch}"
 	else
 		echo "git branch found: ${repo}"
-		gitpath="${gitbranch}"
+		gitpath="${xgitbranch}"
 		GitLoad
 	fi
 fi
 
-if [ "${githost}" = "1" ] ; then
+if [ "${xgithost}" = "1" ] ; then
 	#repo=""
-	repo=$(/usr/bin/git ls-remote "${giturl}" "${host}")
+	repo=$(/usr/bin/git ls-remote "${xgiturl}" "${host}")
 	if [ -z "${repo}" ] ; then
-		echo "no host repo found: ${giturl} ${host}"
+		echo "no host repo found: ${xgiturl} ${host}"
 	else
 		gitpath="${host}"
 		echo "host repo found: ${repo}"
@@ -36,8 +36,8 @@ fi
 
 
 GitLoad () {
-	echo "try to load rtc repo: ${giturl} ${gitpath}"
-	eval cd /tmp && git clone --depth=1 -b "${gitpath}" --single-branch "${giturl}" && cp -a "${gitreponame}"/fs_overlay/* / && rm -r "${gitreponame}"
+	echo "try to load rtc repo: ${xgiturl} ${gitpath}"
+	eval cd /tmp && git clone --depth=1 -b "${gitpath}" --single-branch "${xgiturl}" && cp -a "${xgitreponame}"/fs_overlay/* / && rm -r "${xgitreponame}"
 	# unfortunately github does not support remote archive, hrz gitolite does:
 	# eval cd / && git archive --format=tar --remote="${giturl}" | tar xf - --strip-components=1
 }

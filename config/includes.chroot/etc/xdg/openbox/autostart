@@ -1,3 +1,4 @@
+set_noblank &
 start_xscreensaver &
 start_feh &
 start_panel &

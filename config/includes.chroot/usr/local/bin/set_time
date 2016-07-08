@@ -1,18 +1,15 @@
 #!/bin/sh
 
-###########################################################
-#
-# set time
-# $Id: set_time 42 2009-06-02 08:54:58Z gebhardt $
-#
-###########################################################
+#echo "Set time by ntpdate"
 
-export PATH=/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
-
-echo "Set time by ntpdate"
-
-rm -f /etc/localtime
-ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-echo "Europe/Berlin" > /etc/timezone
-ntpdate 0.de.pool.ntp.org || ntpdate 1.de.pool.ntp.org || ntpdate 2.de.pool.ntp.org || ntpdate 3.de.pool.ntp.org
+timedatectl set-timezone 'Europe/Berlin'
+timedatectl set-ntp true
+hwclock -w
 exit 0
+
+#rm -f /etc/localtime
+#ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+#echo "Europe/Berlin" > /etc/timezone
+#ntpdate 0.de.pool.ntp.org || ntpdate 1.de.pool.ntp.org || ntpdate 2.de.pool.ntp.org || ntpdate 3.de.pool.ntp.org
+#hwclock -w
+#exit 0

@@ -32,35 +32,50 @@ then
 	sleep 5
 fi
 
+Cmdline ()
+{
+	# Reading kernel command line
+	for _PARAMETER in ${LIVE_CONFIG_CMDLINE}
+	do
+		case "${_PARAMETER}" in
+			live-config.username=*|username=*)
+				echo "${_PARAMETER}" >> /etc/environment
+				;;
+			x*=*)
+				echo "${_PARAMETER}" >> /etc/environment
+				eval "${_PARAMETER}"
+				;;
+		esac
+	done
+}
 
 Rtc () {
 	echo "Rtc"
 	# start ssh agent only if rtcssh is defined
-	if [ ! -z "${rtcssh}" ] ; then
+	if [ ! -z "${xrtcssh}" ] ; then
 		. /usr/local/bin/start_ssh
 	fi
 
-	if [ -z "${rtcrepo}" ] ; then
+	if [ -z "${xrtcrepo}" ] ; then
 		echo "no rtcrepo setting"
 		return 0
 	fi
 
-	echo "rtcrepo = ${rtcrepo}"
-
-	if [ "${rtcrepo}" = "git" ] ; then
+	if [ "${xrtcrepo}" = "git" ] ; then
 		. /usr/local/bin/rtc_git
 		return 0
 	fi
 
-	if [ "${rtcrepo}" = "svn" ] ; then
+	if [ "${xrtcrepo}" = "svn" ] ; then
 		. /usr/local/bin/rtc_svn
 		return 0
 	fi
 
-	if [ "${rtcrepo}" = "tgz" ] ; then
+	if [ "${xrtcrepo}" = "tgz" ] ; then
 		. /usr/local/bin/rtc_tgz
 		return 0
 	fi
 }
 
+Cmdline
 Rtc

@@ -1,33 +1,51 @@
 #!/bin/bash
 
 OPTS=""
-PROFILE="/home/${username}/ffprofile"
+PROFILE="/home/${username}/browser_profile"
+OVERLAY_PROFILE=""
+CMD=""
+CONFIG=""
 
-# populate firefox profile
-firefox -silent -profile ${PROFILE}
+if [ "${xbrowser}" == "firefox" ]
+then
+	OVERLAY_PROFILE="/etc/firefox/profile/*"
+	CMD="firefox"
+fi
+
+if [ "${xbrowser}" == "seb2" ]
+then
+	CONFIG="/etc/seb2/config.json"
+	OVERLAY_PROFILE="/etc/seb2/profile/*"
+        CMD="firefox -app /opt/seb2/browser/app/seb.ini -config ${CONFIG}"
+fi
+
+if [ "${xbrowser}" == "seb1" ]
+then
+	CONFIG="/etc/seb1/config.json"
+	OVERLAY_PROFILE="/etc/seb1/profile/*"
+        CMD="firefox -app /opt/seb1/apps/seb.ini -configpath ${CONFIG}"
+fi
+
+if [ -z "${CMD}" ]
+then
+	echo "No browser defined"
+	exit 0
+fi
+
+# populate browser profile
+${CMD} -silent -profile ${PROFILE}
 
 sleep 2
 
 # copy custom profile files
-cp -a /etc/firefox/profile/* ${PROFILE}
+cp -a ${OVERLAY_PROFILE} ${PROFILE}
 
 if [ ! -z "${xbrowseropts}" ]
 then
-	# replace options "," with " ". Don't delete trailing " " from OPTS=" $...."!
-	OPTS=" ${xbrowseropts//,/ }"
+	# replace options "," with " ".
+	OPTS="${xbrowseropts//,/ }"
 fi
 
-if [ "${xbrowser}" == "firefox" ]
-then
-	while [ ! $(pidof firefox) ] ; do
-		`firefox -profile ${PROFILE}${OPTS}`
-	done
-fi
-
-if [ "${xbrowser}" == "seb" ]
-then
-	echo "try starting seb..."
-	while [ ! $(pidof firefox) ] ; do
-		`firefox -app /opt/browser/app/seb.ini -profile ${PROFILE}${OPTS}`
-	done
-fi
+while [ ! $(pidof firefox) ] ; do
+	${CMD} -profile ${PROFILE} ${OPTS}
+done
